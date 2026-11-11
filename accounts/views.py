@@ -1,7 +1,14 @@
-from rest_framework import status
+
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
+from drf_spectacular.utils import(
+    extend_schema,
+    OpenApiParameter,
+    OpenApiResponse, 
+)
+
 from . models import(
     Brand,
 )
@@ -14,6 +21,18 @@ from . serializers import(
 # =============
 # Brand Api
 # =============
+@extend_schema(
+    tags=['Brand'],
+    summary='List Or Create Brand',
+    description='Retrive All Brand Or New Brand',
+    request=Brandserializer,
+    responses={
+        200:Brandserializer(many=True),
+        201:Brandserializer,
+        400:OpenApiResponse(decription='Validation error.'),
+    }
+    
+)
 
 @api_view(['GET', 'POST'])
 def brand_list_create(request):
@@ -32,8 +51,27 @@ def brand_list_create(request):
         status=status.HTTP_201_CREATED
     )
 
+@extend_schema(
+    methods=['GET'],
+    responses=Brandserializer
+)
+@extend_schema(
+    methods=['PUT'],
+    request=Brandserializer,
+    responses=Brandserializer,
+    
+)
+@extend_schema(
+    methods=['PATCH'],
+    request=Brandserializer,
+    responses=Brandserializer
+)
+@extend_schema(
+    methods=['DELETE'],
+    responses={204:Brandserializer}
+)
 
-@api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def brand_detail(request, pk):
     brand = get_object_or_404(pk=pk)
 #get method
