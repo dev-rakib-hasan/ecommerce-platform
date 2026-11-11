@@ -24,12 +24,12 @@ from . serializers import(
 @extend_schema(
     tags=['Brand'],
     summary='List Or Create Brand',
-    description='Retrive All Brand Or New Brand',
+    description='Retrieve All Brand Or New Brand',
     request=Brandserializer,
     responses={
         200:Brandserializer(many=True),
         201:Brandserializer,
-        400:OpenApiResponse(decription='Validation error.'),
+        400:OpenApiResponse(description='Validation error.'),
     }
     
 )
