@@ -5,6 +5,8 @@ from .models import (
 
 class Brandserializer(serializers.ModelSerializer):
     class Meta:
+        model = Brand
+        
         fields = [
             "id",
             "name",

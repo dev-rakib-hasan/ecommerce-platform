@@ -117,8 +117,15 @@ MAILERS = {
     },
 }
 
-# drf spectular
+# drf spectular-swagger
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'E-commerce Product Management API',
+    'DESCRIPTION': 'API documentation for product management.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
