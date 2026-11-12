@@ -12,10 +12,12 @@ from drf_spectacular.utils import(
 
 from . models import(
     Brand,
+    Category,
 )
 
 from . serializers import(
     Brandserializer,
+    CategorySerializer,
 )
 
 
@@ -105,4 +107,26 @@ def brand_detail(request, pk):
     elif request.method == 'DELETE':
         brand.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
+
+#=================
+# Category API
+#=================
+
+@api_view(['GET', 'POST'])
+def category_list_create(request):
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(
+            serializer.data
+            )
+    serializer = CategorySerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(
+        serializer.data,
+        status=status.HTTP_201_CREATED
+        )
+    
+    
