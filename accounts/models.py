@@ -37,3 +37,17 @@ class Brand(models.Model):
             
     def __str__(self):
         return self.name
+
+class Category(models.Model):
+    name = models.CharField(max_length=150)
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+        related_name='subcategories',
+    )
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
