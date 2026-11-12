@@ -26,7 +26,7 @@ from . serializers import(
 # =============
 @extend_schema(
     tags=['Brand'],
-    summary='List Or Create Brand',
+    summary='List And Create Brand',
     description='Retrieve All Brand Or New Brand',
     request=Brandserializer,
     responses={
@@ -129,4 +129,15 @@ def category_list_create(request):
         status=status.HTTP_201_CREATED
         )
     
+@extend_schema(
+    tags=['Category'],
+    summary='List And Create Category',
+    description='Retrieve All Categories Or Add New Category',
+    request=CategorySerializer,
+    responses={
+        200:CategorySerializer(many=True),
+        201:CategorySerializer,
+        400:OpenApiResponse(description='Validation error.'),
+    }
     
+)
