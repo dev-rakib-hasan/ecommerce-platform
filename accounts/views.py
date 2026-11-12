@@ -7,6 +7,7 @@ from drf_spectacular.utils import(
     extend_schema,
     OpenApiParameter,
     OpenApiResponse, 
+    OpenApiTypes,
 )
 
 from . models import(
@@ -52,23 +53,25 @@ def brand_list_create(request):
     )
 
 @extend_schema(
-    methods=['GET'],
-    responses=Brandserializer
-)
-@extend_schema(
-    methods=['PUT'],
+    tags=['Brand'],
+    summary='Retrieve, Update Or Delete Brand',
+    description='Retrieve update or delete brand using ID.',
+    parameters=[
+        OpenApiParameter(
+            name='pk',
+            type=OpenApiTypes.INT,
+            location=OpenApiParameter.PATH,
+            description='Brand Id'
+            
+        )
+    ],
     request=Brandserializer,
-    responses=Brandserializer,
-    
-)
-@extend_schema(
-    methods=['PATCH'],
-    request=Brandserializer,
-    responses=Brandserializer
-)
-@extend_schema(
-    methods=['DELETE'],
-    responses={204:Brandserializer}
+    responses={
+        200:Brandserializer,
+        204:OpenApiResponse(description='Brand deleted successfully.'),
+        400:OpenApiResponse(description='Validation errors.'),
+        404:OpenApiResponse(description='Brand not found'),
+    },
 )
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
