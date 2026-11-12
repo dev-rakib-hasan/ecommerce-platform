@@ -98,8 +98,8 @@ def brand_detail(request, pk):
                 data=request.data
                 )
             
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
 
     elif request.method == 'DELETE':
