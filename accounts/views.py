@@ -76,7 +76,7 @@ def brand_list_create(request):
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def brand_detail(request, pk):
-    brand = get_object_or_404(pk=pk)
+    brand = get_object_or_404(Brand, pk=pk)
 #get method
     if request.method == 'GET':
         serializer = Brandserializer(brand)
@@ -104,5 +104,5 @@ def brand_detail(request, pk):
 
     elif request.method == 'DELETE':
         brand.delete()
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
         
