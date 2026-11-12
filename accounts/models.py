@@ -37,6 +37,7 @@ class Brand(models.Model):
             
     def __str__(self):
         return self.name
+    
 
 class Category(models.Model):
     name = models.CharField(max_length=150)
@@ -46,8 +47,16 @@ class Category(models.Model):
         'self',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
         related_name='subcategories',
     )
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, *args, **kwagrs):
+        if not self.slug:
+            self.slug = generate_unique_slug(self, self.name)
+        super().save(*args, **kwagrs)    
+
+    def __str__(self):
+        return self.name
