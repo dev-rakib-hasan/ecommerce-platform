@@ -166,7 +166,7 @@ def category_list_create(request):
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def category_detail(request, pk):
-    category = get_object_or_404(category, pk=pk)
+    category = get_object_or_404(Category, pk=pk)
     #get method
     if request.method == 'GET':
         serializer = CategorySerializer(category)
