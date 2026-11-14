@@ -9,5 +9,5 @@ urlpatterns = [
     path('brands/<int:pk>/', views.brand_detail, name='brand_detail'),
     
     # Category
-    path('categories/', views.brand_list_create, name='category_list_create'),
+    path('categories/', views.category_list_create, name='category_list_create'),
 ]

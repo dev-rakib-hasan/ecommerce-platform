@@ -113,6 +113,20 @@ def brand_detail(request, pk):
 # Category API
 #=================
 
+@extend_schema(
+    tags=['Category'],
+    summary='List And Create Category',
+    description='Retrieve All Categories Or Add New Category',
+    request=CategorySerializer,
+    responses={
+        200:CategorySerializer(many=True),
+        201:CategorySerializer,
+        400:OpenApiResponse(
+            description='Validation error.'
+            ),
+    }
+)
+
 @api_view(['GET', 'POST'])
 def category_list_create(request):
     if request.method == 'GET':
@@ -129,15 +143,3 @@ def category_list_create(request):
         status=status.HTTP_201_CREATED
         )
     
-@extend_schema(
-    tags=['Category'],
-    summary='List And Create Category',
-    description='Retrieve All Categories Or Add New Category',
-    request=CategorySerializer,
-    responses={
-        200:CategorySerializer(many=True),
-        201:CategorySerializer,
-        400:OpenApiResponse(description='Validation error.'),
-    }
-    
-)

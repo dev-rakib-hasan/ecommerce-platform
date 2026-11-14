@@ -25,6 +25,11 @@ class Brandserializer(serializers.ModelSerializer):
         ]
         
 class CategorySerializer(serializers.ModelSerializer):
+    parent_name = serializers.CharField(
+        source = 'parent.name',
+        read_only = True
+    )
+    
     class Meta:
         model = Category
         fields = [
