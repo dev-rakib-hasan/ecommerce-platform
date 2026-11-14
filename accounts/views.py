@@ -143,3 +143,53 @@ def category_list_create(request):
         status=status.HTTP_201_CREATED
         )
     
+@extend_schema(
+    tags=['Category'],
+    summary='Retrieve Update Or Delete Category',
+    description='Retrive update or delete category using ID',
+    parameters=[
+        OpenApiParameter(
+            name='pk',
+            type=OpenApiTypes.INT,
+            location=OpenApiParameter.PATH,
+            description='category ID',
+        )
+    ],
+    request=CategorySerializer,
+    responses= {
+        200:CategorySerializer,
+        204:OpenApiResponse(description='Category deleted successfully'),
+        400:OpenApiResponse(description='Validation error'),
+        404:OpenApiResponse(description='Category not found'),
+    }
+)
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def category_detail(request, pk):
+    category = get_object_or_404(category, pk=pk)
+    #get method
+    if request.method == 'GET':
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+    #put pacth method
+    elif request.method in ['PUT', 'PATCH']:
+        
+        if request.method == 'PATCH':
+            serializer = CategorySerializer(
+                category,
+                data=request.data,
+                partial=True
+                )
+        
+        else:
+            serializer = CategorySerializer(
+                category,
+                data=request.data
+            )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        Category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
