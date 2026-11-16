@@ -211,7 +211,7 @@ def category_detail(request, pk):
             location=OpenApiParameter.PATH,
             description='Product ID',
         )
-    ]
+    ],
     request = ProductSerialzer,
     responses= {
         200: ProductSerialzer(many=True),
@@ -261,16 +261,16 @@ def product_detail(request, pk):
         serializer = ProductSerialzer(products)
         return Response(serializer.data)
     
-    elif request.method == ['PUT', 'PATCH']:
+    elif request.method in ['PUT', 'PATCH']:
         if request.method == 'PATCH':
             serializer = ProductSerialzer(
-                Product,
+                products,
                 data=request.data,
                 partial=True
     )
         else:
             serializer = ProductSerialzer(
-                Product,
+                products,
                 data=request.data
                 )
             
@@ -281,4 +281,4 @@ def product_detail(request, pk):
     elif request.method == 'DELETE':
         products.delete()
         
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'product Deleted Successfully'},status=status.HTTP_204_NO_CONTENT)
