@@ -61,6 +61,13 @@ class ProductSerialzer(serializers.ModelSerializer):
        source='category.name',
        read_only=True 
     )
+ 
+    final_price = serializers.SerializerMethodField()
+
+    def get_final_price(self, obj):
+        discount = obj.discount or 0
+        discount_amount = obj.price * discount / 100
+        return obj.price - discount_amount    
     
     class Meta:
         model = Product
@@ -76,6 +83,7 @@ class ProductSerialzer(serializers.ModelSerializer):
             'description',
             'price',
             'discount',
+            'final_price',
             'status',
             'stock',
             'is_featured',
@@ -89,6 +97,7 @@ class ProductSerialzer(serializers.ModelSerializer):
             'slug', 
             'brand_name',
             'category_name',
+            'final_price',
             'created_at',
             'updated_at',
             
