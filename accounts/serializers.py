@@ -52,6 +52,16 @@ class CategorySerializer(serializers.ModelSerializer):
         ]
         
 class ProductSerialzer(serializers.ModelSerializer):
+    
+    brand_name = serializers.CharField(
+        source='brand.name',
+        read_only=True
+    )
+    category_name = serializers.CharField(
+       source='category.name',
+       read_only=True 
+    )
+    
     class Meta:
         model = Product
         fields = [
