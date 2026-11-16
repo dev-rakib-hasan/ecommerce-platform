@@ -97,3 +97,11 @@ class Product(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.BooleanField(default=True)
     updated_at = models.BooleanField(default=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = generate_unique_slug(self, self.name)
+        super().save(self, *args, **kwargs)
+        
+    def __str__(self):
+        return self.name
