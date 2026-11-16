@@ -193,7 +193,7 @@ def category_detail(request, pk):
         return Response(serializer.data)
     
     elif request.method == 'DELETE':
-        Category.delete()
+        category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 #================
@@ -225,4 +225,3 @@ def product_list_create(request):
     serializer.save()
     
     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
