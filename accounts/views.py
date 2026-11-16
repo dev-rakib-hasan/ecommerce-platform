@@ -13,11 +13,13 @@ from drf_spectacular.utils import(
 from . models import(
     Brand,
     Category,
+    Product,
 )
 
 from . serializers import(
     Brandserializer,
     CategorySerializer,
+    ProductSerialzer,
 )
 
 
@@ -193,3 +195,34 @@ def category_detail(request, pk):
     elif request.method == 'DELETE':
         Category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+#================
+# Product API
+#================
+
+@extend_schema(
+    tags = ['Product'],
+    summary = 'List And Create Product',
+    description = 'Retrieve all product or create a new product',
+    request = ProductSerialzer,
+    responses= {
+        200: ProductSerialzer(many=True),
+        201: ProductSerialzer,
+        400: OpenApiResponse(description='Validation error.')
+    }
+)
+
+@api_view(['GET', 'POST'])
+def product_list_create(request):
+    if request.method == 'GET':
+        products = Product.objects.select_related('brand', 'category')
+        
+        serializer = ProductSerialzer(products, many=True)
+        return Response(serializer.data)
+    
+    serializer = ProductSerialzer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
