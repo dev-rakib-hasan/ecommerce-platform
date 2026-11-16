@@ -204,6 +204,14 @@ def category_detail(request, pk):
     tags = ['Product'],
     summary = 'List And Create Product',
     description = 'Retrieve all product or create a new product',
+    parameters = [
+        OpenApiParameter(
+            name = 'pk',
+            type= OpenApiTypes.INT,
+            location=OpenApiParameter.PATH,
+            description='Product ID',
+        )
+    ]
     request = ProductSerialzer,
     responses= {
         200: ProductSerialzer(many=True),
@@ -225,3 +233,52 @@ def product_list_create(request):
     serializer.save()
     
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@extend_schema(
+    tags=['Product'],
+    summary='Retrieve and update delete product.',
+    description='Retrieve all product or create a new product',
+    request=ProductSerialzer,
+    responses={
+        200:ProductSerialzer,
+        204:OpenApiResponse(description=' Product Deleted Successfully. '),
+        400:OpenApiResponse(description='Validation Error'),
+        404:OpenApiResponse(description='Not Found'),
+    }
+)
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def product_detail(request, pk):
+    products = get_object_or_404(
+        Product.objects.select_related(
+            'brand',
+            'category'
+        ),
+        pk=pk
+    )
+    
+    if request.method == 'GET':
+        serializer = ProductSerialzer(products)
+        return Response(serializer.data)
+    
+    elif request.method == ['PUT', 'PATCH']:
+        if request.method == 'PATCH':
+            serializer = ProductSerialzer(
+                Product,
+                data=request.data,
+                partial=True
+    )
+        else:
+            serializer = ProductSerialzer(
+                Product,
+                data=request.data
+                )
+            
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        products.delete()
+        
+        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
