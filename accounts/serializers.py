@@ -4,6 +4,7 @@ from .models import (
     Category,
     Product,
     ProductImage,
+    Productvariant,
     
 )
 
@@ -70,6 +71,23 @@ class ProductImageSerializer(serializers.ModelSerializer):
             'created_at',
         ]
         
+        
+class ProductvariantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Productvariant
+        fields = [
+            'id',
+            'name',
+            'sku',
+            'price',
+            'stock',
+            'is_active',   
+        ]
+        read_only_fields = [
+            'id',
+        ]
+
+
         
 class ProductSerialzer(serializers.ModelSerializer):
     

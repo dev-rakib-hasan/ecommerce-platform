@@ -15,6 +15,7 @@ from . models import(
     Category,
     Product,
     ProductImage,
+    Productvariant,
 )
 
 from . serializers import(
@@ -22,6 +23,7 @@ from . serializers import(
     CategorySerializer,
     ProductSerialzer,
     ProductImageSerializer,
+    ProductvariantSerializer,
 )
 
 
@@ -222,6 +224,7 @@ def product_list_create(request):
             'category',
             ).prefetch_related(
                 'images',
+                'variants',
             )
         
         serializer = ProductSerialzer(products, many=True)

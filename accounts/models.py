@@ -126,6 +126,7 @@ class ProductImage(models.Model):
     
 class Productvariant(models.Model):
     product = models.ForeignKey(
+        Product,
         on_delete=models.CASCADE,
         related_name='variants'
         )
