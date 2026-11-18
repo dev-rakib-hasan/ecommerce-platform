@@ -14,12 +14,14 @@ from . models import(
     Brand,
     Category,
     Product,
+    ProductImage,
 )
 
 from . serializers import(
     Brandserializer,
     CategorySerializer,
     ProductSerialzer,
+    ProductImageSerializer,
 )
 
 
@@ -204,14 +206,6 @@ def category_detail(request, pk):
     tags = ['Product'],
     summary = 'List And Create Product',
     description = 'Retrieve all product or create a new product',
-    parameters = [
-        OpenApiParameter(
-            name = 'pk',
-            type= OpenApiTypes.INT,
-            location=OpenApiParameter.PATH,
-            description='Product ID',
-        )
-    ],
     request = ProductSerialzer,
     responses= {
         200: ProductSerialzer(many=True),
@@ -223,7 +217,12 @@ def category_detail(request, pk):
 @api_view(['GET', 'POST'])
 def product_list_create(request):
     if request.method == 'GET':
-        products = Product.objects.select_related('brand', 'category')
+        products = Product.objects.select_related(
+            'brand', 
+            'category',
+            ).prefetch_related(
+                'images',
+            )
         
         serializer = ProductSerialzer(products, many=True)
         return Response(serializer.data)
@@ -281,4 +280,4 @@ def product_detail(request, pk):
     elif request.method == 'DELETE':
         products.delete()
         
-        return Response({'message': 'product Deleted Successfully'},status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)

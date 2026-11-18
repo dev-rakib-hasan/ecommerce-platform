@@ -3,6 +3,8 @@ from .models import (
     Brand,
     Category,
     Product,
+    ProductImage,
+    
 )
 
 class Brandserializer(serializers.ModelSerializer):
@@ -51,6 +53,24 @@ class CategorySerializer(serializers.ModelSerializer):
             'created_at',
         ]
         
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = [
+            'id',
+            'product',
+            'image',
+            'alt_text',
+            'is_primary',
+            'display_order',  
+            'created_at',     
+        ]
+        read_only_fields = [
+            'id',
+            'created_at',
+        ]
+        
+        
 class ProductSerialzer(serializers.ModelSerializer):
     
     brand_name = serializers.CharField(
@@ -60,6 +80,11 @@ class ProductSerialzer(serializers.ModelSerializer):
     category_name = serializers.CharField(
        source='category.name',
        read_only=True 
+    )
+    
+    images = ProductImageSerializer(
+        many=True,
+        read_only=True
     )
  
     final_price = serializers.SerializerMethodField()
@@ -86,6 +111,7 @@ class ProductSerialzer(serializers.ModelSerializer):
             'final_price',
             'status',
             'stock',
+            'images',
             'is_featured',
             'is_active',
             'created_at',
@@ -102,3 +128,4 @@ class ProductSerialzer(serializers.ModelSerializer):
             'updated_at',
             
         ]
+        
