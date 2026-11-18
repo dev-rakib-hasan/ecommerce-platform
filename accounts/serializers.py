@@ -104,6 +104,10 @@ class ProductSerialzer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    variants = ProductvariantSerializer(
+        many=True,
+        read_only=True
+    )
  
     final_price = serializers.SerializerMethodField()
 
@@ -130,6 +134,7 @@ class ProductSerialzer(serializers.ModelSerializer):
             'status',
             'stock',
             'images',
+            'variants',
             'is_featured',
             'is_active',
             'created_at',
